@@ -6,6 +6,8 @@
 #' @param dist Dist the distribution of the endpoint at this inspection
 #' @export
 get.z.v.full = function(full.data,inspection,dist = "normal"){
+
+
   if (dist == "normal") z.v = get.z.v.norm(full.data) else z.v = get.z.v.bin(full.data)
   trts = unique(full.data$treat)
   trts = trts[order(trts)]
@@ -19,18 +21,6 @@ get.z.v.full = function(full.data,inspection,dist = "normal"){
   monitorArray[[inspection +1]][VI] <<- v[which(trts==best)]
   print(z[which(trts==best)])
   print(v[which(trts==best)])
-  # if (inspection == 1) {
-  #   best <<-  which.max(effect)
-  #   monitorArray[[inspection + 1]][ZI] <<- z[best]
-  #   monitorArray[[inspection + 1]][VI] <<- v[best]
-  #   print(z[best])
-  #   print(v[best])
-  # } else {
-  #   monitorArray[[inspection + 1]][ZI] <<- z[best]
-  #   monitorArray[[inspection + 1]][VI] <<- v[best]
-  #   print(z[best])
-  #   print(v[best])
-  # }
 }
 
 #' get.z.v.norm function
