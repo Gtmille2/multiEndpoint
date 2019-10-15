@@ -19,8 +19,7 @@ get.z.v.full = function(full.data,inspection,dist = "normal"){
   best <<- trts[which.max(effect)]
   monitorArray[[inspection +1]][ZI] <<- z[which(trts==best)]
   monitorArray[[inspection +1]][VI] <<- v[which(trts==best)]
-  print(z[which(trts==best)])
-  print(v[which(trts==best)])
+
 }
 
 #' get.z.v.norm function

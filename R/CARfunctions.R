@@ -67,38 +67,54 @@ g=function(x,p1=3/4,n.trt)
 #' Function to determine treatment assignments in SPB Design
 #' @param x X vector of covariate values, ranging from 0 to total number of factor levels
 #' @param n Total sample size
-#' @param m The number of blocks
+#' @param m M is the level of discretization
+#' @param n.trt n.trt is the number of treatments in the trial
 #' @export
 #' @examples
 #' spbd()
-
-spbd=function(x,n,m=4)
-{tr=rep(NA,n)
-i=1
-while(i<=m)
+spbd=function(x,n,m=4,n.trt)
 {
-  tr[x==i]=pbr(length(x[x==i]))
-  i=i+1
-}
-return(tr)
+  tr=rep(NA,n)
+  i=1
+  while(i<=m)
+  {
+    # print(i)
+    # print(length(x[x==i]))
+
+    tr[x==i]=pbr(length(x[x==i]),n.trt = n.trt)
+    # print(tr)
+    i=i+1
+  }
+  return(tr)
 }
 
 #' PBR Function
 #'
 #' This function is not generally used. This is used in spbd to determine treatment assignments
 #' @param n Total n size
-#' @param block.size This is the number of subjects in each block
-pbr=function(n,block.size=4) #block.size is the number of subjects in each block, assuming fixed
+#' @param block.size This is the number of subjects in each block, needs to be a multiple of the number of treatments
+#' @param n.trt is the number of treatments in the trial, including the control
+pbr=function(n,block.size=12,n.trt) #block.size is the number of subjects in each block, assuming fixed
 {
   block.num=ceiling(n/block.size)
+  # print(block.num)
   cards=NULL
   i=1
   while(i<=block.num)
   {
-    cards=c(cards,sample(cbind(rep(1,block.size/2),rep(0,block.size/2)),block.size))
+
+    full = matrix(sort(rep(seq(0,n.trt-1),block.size/2),decreasing = TRUE),ncol=n.trt)
+    # print(full)
+    cards = c(cards, sample(full,block.size))
+    # cards=c(cards,sample(cbind(rep(1,block.size/2),rep(0,block.size/2)),block.size))
     i=i+1
+    # print(cards)
   }
-  cards=cards[1:n]
+  # print(n)
+  cards=cards[1:n] #Why up to n? # Is this the step that deals with "a block size larger than the sum of the treatment group ratio"
+
   return(cards)
 }
+
+
 

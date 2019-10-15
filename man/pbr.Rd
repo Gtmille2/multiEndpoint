@@ -4,12 +4,14 @@
 \alias{pbr}
 \title{PBR Function}
 \usage{
-pbr(n, block.size = 4)
+pbr(n, block.size = 12, n.trt)
 }
 \arguments{
 \item{n}{Total n size}
 
-\item{block.size}{This is the number of subjects in each block}
+\item{block.size}{This is the number of subjects in each block, needs to be a multiple of the number of treatments}
+
+\item{n.trt}{is the number of treatments in the trial, including the control}
 }
 \description{
 This function is not generally used. This is used in spbd to determine treatment assignments

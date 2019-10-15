@@ -8,24 +8,20 @@ monitorArray[[1]][VI] <<- 0
 print(vmax)
 for ( j in 3:(numberInspectionsMax+1)) {
   monitorArray[[j]][VI] <<- vmax*(j-2)/(numberInspectionsMax-1)
-  cat("Monitor Array at Point: ",j," ",monitorArray[[j]][VI]," \n")
 }
 for ( j in 1:ntmt) theta[j] <<- 0
 for ( j in 1:ntmt) theta1[j] <<- 0
 for ( numberInspections in 1:(numberInspectionsMax) ) {
-  print(numberInspections)
   if(numberInspections == 1) {
     monitorArray[[numberInspections]][UPPER_BOUNDI]  <<- 0
     monitorArray[[numberInspections]][LOWER_BOUNDI] <<- 0
   }
   print(TRUE)
   if ( numberInspections > 1) {
-    #cat("numberInspections here: ",numberInspections,"\n")
     densityFunctionDiscreteArray <<- densityArray(0,numberInspections-1,INTEGR_POINTS)
 
     upperBoundary = binarySearchUpper(0,5*sqrt(monitorArray[[numberInspections+1]][VI]),numberInspections)
     lowerBoundary = binarySearchLower(-5*sqrt(monitorArray[[numberInspections+1]][VI]),5*sqrt(monitorArray[[numberInspections+1]][VI]),numberInspections)
-    #cat("lowerBoundary here: ", lowerBoundary,"\n")
 
     #Think I have to use two different functions for upper and lower since R can't do pointer functions
     monitorArray[[numberInspections+1]][UPPER_BOUNDI] <<- upperBoundary
@@ -45,7 +41,6 @@ theta1[2]<<-(0.68-0.52)/.6
 theta1[3]<<-(0.68-0.52)/.6
 difference = getErrorRates(1,numberInspectionsMax-1,0)-.9
 if (numberInspections > 1)
-  cat("vmax: ",vmax, "difference: ",difference,"\n")
 return(difference)
 }
 
@@ -85,7 +80,6 @@ lower_search_fn = function(lowerBoundary,numberInspections) {
 binarySearchUpper = function(lowerLimit,upperLimit,numberInspections) {
   loop = 0
   f_upr = upper_search_fn(upperLimit,numberInspections)
-  #cat("Number inspections: ", numberInspections, " f_upr: ",f_upr, "\n")
   while ( loop < BINARY_SEARCH_MAX_ITERATIONS) {
     mid_val = (upperLimit+lowerLimit)/2
     if( abs(mid_val) >= CLOSE_ZERO & abs((upperLimit - mid_val)/mid_val) < SEARCH_TOLERANCE)
@@ -93,7 +87,6 @@ binarySearchUpper = function(lowerLimit,upperLimit,numberInspections) {
 
     loop = loop + 1
     f_mid = upper_search_fn(mid_val,numberInspections)
-    #cat("f_mid: ", f_mid,"\n")
     if(f_mid*f_upr == 0 ){
 
       return(mid_val)
@@ -146,7 +139,6 @@ binarySearchLower = function(lowerLimit,upperLimit,numberInspections) {
     }
 
   }
-  #print(mid_val)
   return(mid_val)
 
 }
@@ -160,8 +152,7 @@ binarySearchLower = function(lowerLimit,upperLimit,numberInspections) {
 binarySearchV = function(lowerLimit,upperLimit,numberInspections) {
   loop = 0
   f_upr = v_search_fn(upperLimit)
-  #print(lowerLimit)
-  #print(upperLimit)
+
   while ( loop < BINARY_SEARCH_MAX_ITERATIONS) {
     mid_val = (upperLimit+lowerLimit)/2
     if( abs(mid_val) >= CLOSE_ZERO & abs((upperLimit - mid_val)/mid_val) < SEARCH_TOLERANCE)

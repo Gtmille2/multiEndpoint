@@ -8,13 +8,10 @@ getErrorRates = function(get_power,numberInspections,print) {
   alpha_u = 0
   alpha_l = 0
 
-  #cat("numberInspections: ",numberInspections,"\n")
   densityFunctionDiscreteArray <<- densityArray(get_power,numberInspections,INTEGR_POINTS)
 
   for ( inspection in 1:(numberInspections+1)) {
-    #print("hereeeeeeeeeeeeeee")
     alpha_u = alpha_u + probCrossUpperDiscrete(get_power,inspection)
-    #cat("alpha_u: ",alpha_u, "\n")
     if ( get_power == 0) alpha_l = alpha_l + probCrossLowerDiscrete(get_power,inspection)
     if ( print == 1 & get_power == 0) cat("alpha_u: ", alpha_u, "alpha_l", alpha_l,"\n")
     if ( print == 1 & get_power == 1) cat("alpha_u: ",alpha_u,"\n")
@@ -33,9 +30,7 @@ getErrorRates = function(get_power,numberInspections,print) {
 probCrossUpperDiscrete = function(get_power,inspection) {
   upperBound = monitorArray[[inspection+1]][UPPER_BOUNDI]
   vStep = monitorArray[[inspection+1]][VI] - monitorArray[[inspection]][VI]
-  # cat("upperBound: ",upperBound," vStep: ",vStep,"inspection: ",inspection, "\n")
   if(inspection == 1) {
-    #print(TRUE)
     return(0)
   }
   else
@@ -58,7 +53,6 @@ integrateNormalDistributionDensityFunctionDiscrete = function(inspection) {
       mu_second = theta[1]*monitorArray[[3]][VI] - rho*sqrt(monitorArray[[3]][VI]/monitorArray[[2]][VI])*
         (theta[1]*monitorArray[[2]][VI]-s)
       var_second = monitorArray[[3]][VI]*(1-rho*rho)
-      # #cat("Test: ",monitorArray[[2]][VI],"Test 2: ",monitorArray[[1]][VI],"\n")
       normalDistribution = 1 - pnorm((monitorArray[[inspection+1]][UPPER_BOUNDI] - mu_second)/sqrt(var_second))
     }
     else {
@@ -148,7 +142,6 @@ densityArray = function(get_power,numberInspections) {
     cat("vStep: ",vStep,"\n")
     if ( i ==0 ) {
       for( j in 0:(INTEGR_POINTS-1)){
-        print("Blah here")
         # z = array[[i+1]][ARRVALUE,j+1]
         z = monitorArray[[i+1]][ZI]
 
@@ -164,7 +157,6 @@ densityArray = function(get_power,numberInspections) {
       # for ( r in 1:11 ) cat("BLAH HERE: ",array[[i+1]][ARRDENSITY,r],"\n")
     }
     if ( i ==1 ) {
-      print(TRUE)
       for ( j in 0:(INTEGR_POINTS-1)) {
         density = 0.0
         z = array[[i+1]][ARRVALUE,j+1]

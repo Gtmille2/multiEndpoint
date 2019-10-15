@@ -26,8 +26,7 @@ simulatedata.car  <- function(mean.s,sigma = 1, tau1 = 1, tau2 = 1,treat,covValu
   # if (dist == "normal") full.data = simnormal(mean.s = mean.s,sigma,trts,n.s,tau1,tau2,get_power = 0,covValues) else print(TRUE)
   print(n.s)
   if (dist == "normal") full.data = simnormal(mean.s = mean.s,sigma,trts,n.s,tau1,tau2,get_power = 0,covValues,treat) else full.data = simbin(mean.s,trts,n.s,treat)
-  print(n.s)
-  print(nrow(full.data))
+
   out = data.frame(s = full.data,treat = treat)
   out = rbind(data[data$treat %in% trts,],out)
   colnames(out) = c("s","treat")
@@ -69,7 +68,7 @@ simnormal = function (mean.s,sigma,trts,n.s, tau1, tau2, get_power = 0,covValues
 #' @param trts Trts is the vector of possible treatments
 #' @param n.s N.s is the frequency of each treatment
 simbin = function(mean.s,trts,n.s,treat) {
-  print(TRUE)
+
   mean.full.s = rep(rep(0,length(trts)),n.s)
   for (trt in trts )
   {
