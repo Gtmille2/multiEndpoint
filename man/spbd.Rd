@@ -4,16 +4,16 @@
 \alias{spbd}
 \title{spbd Function}
 \usage{
-spbd(x, n, m = 4, n.trt)
+spbd(covValues, m = 4, best = 0, tr = NULL, n.trt)
 }
 \arguments{
-\item{x}{X vector of covariate values, ranging from 0 to total number of factor levels}
-
-\item{n}{Total sample size}
-
 \item{m}{M is the level of discretization}
 
 \item{n.trt}{n.trt is the number of treatments in the trial}
+
+\item{x}{X vector of covariate values, ranging from 0 to total number of factor levels}
+
+\item{n}{Total sample size}
 }
 \description{
 Function to determine treatment assignments in SPB Design

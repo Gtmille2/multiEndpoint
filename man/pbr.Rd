@@ -4,7 +4,7 @@
 \alias{pbr}
 \title{PBR Function}
 \usage{
-pbr(n, block.size = 12, n.trt)
+pbr(n, block.size = 12, n.trt, trts)
 }
 \arguments{
 \item{n}{Total n size}

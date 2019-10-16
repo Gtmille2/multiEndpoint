@@ -72,19 +72,41 @@ g=function(x,p1=3/4,n.trt)
 #' @export
 #' @examples
 #' spbd()
-spbd=function(x,n,m=4,n.trt)
+spbd=function(covValues,m=4, best = 0, tr = NULL, n.trt)
 {
-  tr=rep(NA,n)
-  i=1
+  if (best == 0) trts = seq(0,n.trt) else trts = c(0,best)
+  if (is.null(tr)) keeps = rep(TRUE,nrow(covValues)) else keeps = c(tr %in% trts,rep(TRUE,nrow(covValues)-length(tr)))
+  n.trt = length(trts)
+  # if (is.null(tr)) arrival = as.matrix(ade4::acm.disjonctif(x)) else arrival = as.matrix(ade4::acm.disjonctif(x[keeps,]))
+  s = length(tr) + 1
+  z1 = covValues[,1]-1
+  z2 = covValues[,2]-1
+  n = length(z1)
+  x=NULL  #covaiate info used for function spbd, values from 1 to 4
+  #think I want this to be 100, 130-30
+  while(s<=n)
+  {
+    if(z1[s]==1 & z2[s]==1) x[s]=1 else
+      if(z1[s]==1 & z2[s]==0) x[s]=2 else
+        if(z1[s]==0 & z2[s]==1) x[s]=3 else
+          if(z1[s]==0 & z2[s]==0) x[s]=4
+
+          s=s+1
+  }
+  x = na.omit(x)
+  trkeeps = tr[tr %in% trts]
+  i = 1
+  tr=NULL
   while(i<=m)
   {
     # print(i)
     # print(length(x[x==i]))
 
-    tr[x==i]=pbr(length(x[x==i]),n.trt = n.trt)
+    tr[x==i]=pbr(length(x[x==i]),n.trt = n.trt,trts=trts)
     # print(tr)
     i=i+1
   }
+  tr = c(trkeeps,tr)
   return(tr)
 }
 
@@ -94,8 +116,9 @@ spbd=function(x,n,m=4,n.trt)
 #' @param n Total n size
 #' @param block.size This is the number of subjects in each block, needs to be a multiple of the number of treatments
 #' @param n.trt is the number of treatments in the trial, including the control
-pbr=function(n,block.size=12,n.trt) #block.size is the number of subjects in each block, assuming fixed
+pbr=function(n,block.size=12,n.trt,trts) #block.size is the number of subjects in each block, assuming fixed
 {
+  # trts = trts[order(trts)]
   block.num=ceiling(n/block.size)
   # print(block.num)
   cards=NULL
@@ -103,7 +126,7 @@ pbr=function(n,block.size=12,n.trt) #block.size is the number of subjects in eac
   while(i<=block.num)
   {
 
-    full = matrix(sort(rep(seq(0,n.trt-1),block.size/2),decreasing = TRUE),ncol=n.trt)
+    full = matrix(sort(rep(trts,block.size/2),decreasing = TRUE),ncol=n.trt)
     # print(full)
     cards = c(cards, sample(full,block.size))
     # cards=c(cards,sample(cbind(rep(1,block.size/2),rep(0,block.size/2)),block.size))
