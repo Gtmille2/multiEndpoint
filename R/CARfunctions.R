@@ -1,3 +1,18 @@
+#' Function for getting the treatment assignments
+#'
+#' Get treamtments points either to Pocock's design or Stratified Permuted Block Design
+#' @param covValues Covariate Values for the number of patients in the trial
+#' @param best Best is the selected best treatment after the first analysis
+#' @param Tr Treatment assignments passed back to the treatment assignment function after the first interim analysis
+#' @param Design Design is the variable determing whether there to use Pocock's design or Stratified Permuted Block Randomization
+#' @export N.trt Number of treatments in the trial. After the first interim analysis, there will only be the control and the selected treatment
+getTreat = function(covValues, best = 0, tr = NULL, n.trt, design) {
+  if ( design == "Pocock" ) treat = psd(covValues, best = best, tr = tr,n.trt = n.trt) else treat = spbd(covValues,best = best, tr = tr, n.trt = n.trt)
+  treat
+  }
+
+
+
 #' Function for returning treatment assignments in Pocock's Design
 #'
 #' This function takes a vector of factor level assignments, and returns treatment assignments
@@ -7,7 +22,6 @@
 #' @param Best is the selected best treatment if past the first analysis. Default is 0
 #' @param tr Tr is the vector of treamtnet assignments. Default is NULL
 #' @param n.trt The number of treatments used in the analaysis if at the first stage in the analysis.
-#' @export
 #' @examples
 #' psd(x = seamlessTrials::all)
 psd=function(x,p1=3/4,best = 0,tr = NULL,n.trt)
